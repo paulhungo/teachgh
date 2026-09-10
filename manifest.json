@@ -1,0 +1,13 @@
+{
+  "name": "TeachGH — Ghana Teaching Resources",
+  "short_name": "TeachGH",
+  "description": "Curriculum-aligned teaching resources, life skills and extracurricular activities for Ghanaian basic schools (Basic 1 to JHS 3).",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f6f8f7",
+  "theme_color": "#0b6e4f",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

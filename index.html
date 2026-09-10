@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TeachGH — curriculum-aligned teaching resources, life skills and extracurricular activities for Ghanaian basic schools (Basic 1 to JHS 3). Free for teachers. Works offline.">
+<meta name="theme-color" content="#0b6e4f">
+<title>TeachGH — Teaching Resources for Ghanaian Basic Schools</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+  :root{
+    --green:#0b6e4f; --green-d:#084c37; --green-l:#e6f2ee;
+    --gold:#c9a227; --gold-l:#fdf7e3;
+    --ink:#1e2b26; --mut:#5f6f68; --line:#e3e8e5; --bg:#f6f8f7; --card:#ffffff;
+    --red:#b3392e; --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--green);text-decoration:none}
+  img{max-width:100%}
+  header{position:sticky;top:0;z-index:50;background:var(--green);color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+  .hwrap{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+  .logo{display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+  .logo .mark{width:34px;height:34px;border-radius:8px;background:var(--gold);color:#084c37;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:19px;font-family:Georgia,serif}
+  .logo b{font-size:18px;letter-spacing:.4px}
+  .logo span{display:block;font-size:10px;opacity:.85;font-weight:400}
+  nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  nav a{color:#eaf4ef;font-size:13.5px;padding:7px 10px;border-radius:8px;white-space:nowrap}
+  nav a.on,nav a:hover{background:rgba(255,255,255,.16);color:#fff}
+  .hero{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;padding:34px 16px 30px}
+  .hwrap2{max-width:1080px;margin:0 auto}
+  .hero h1{font-family:Georgia,serif;font-size:27px;line-height:1.25;max-width:640px}
+  .hero p{margin-top:10px;max-width:620px;color:#dcefe6;font-size:15px}
+  .chips{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:20px;padding:7px 14px;font-size:13px;cursor:pointer}
+  .chip:hover{background:rgba(255,255,255,.26)}
+  main{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
+  .bandgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:-6px}
+  .bandcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;cursor:pointer;transition:.15s;border-top:4px solid var(--gold)}
+  .bandcard:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(11,110,79,.14)}
+  .bandcard h3{font-size:16.5px;color:var(--green-d)}
+  .bandcard p{font-size:13px;color:var(--mut);margin-top:4px}
+  .bandcard .go{margin-top:10px;font-size:12.5px;font-weight:600;color:var(--green)}
+  section h2{font-family:Georgia,serif;color:var(--green-d);font-size:21px;margin:26px 0 4px}
+  section .sub{color:var(--mut);font-size:13.5px;margin-bottom:12px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  select,.inp{padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:14px;color:var(--ink);min-width:0}
+  .inp{flex:1;min-width:180px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px}
+  .rcard .kicker{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .pill{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:12px;background:var(--green-l);color:var(--green-d);text-transform:uppercase;letter-spacing:.4px}
+  .pill.gold{background:var(--gold-l);color:#8a6d1f}
+  .rcard h3{font-size:15.5px;line-height:1.35}
+  .rcard .meta{font-size:12px;color:var(--mut)}
+  .rcard .row{margin-top:auto;display:flex;gap:8px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer}
+  .btn.ghost{background:#fff;color:var(--green);border:1.5px solid var(--green)}
+  .btn.small{padding:6px 11px;font-size:12.5px}
+  .btn:hover{filter:brightness(1.06)}
+  .back{display:inline-block;margin:6px 0 12px;font-size:13.5px;cursor:pointer;color:var(--green);font-weight:600}
+  .detail{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .detail h1{font-family:Georgia,serif;color:var(--green-d);font-size:22px;line-height:1.3}
+  .detail .kick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .std{background:var(--gold-l);border:1px solid #ead9a0;border-radius:9px;padding:12px 14px;margin:12px 0;font-size:13.5px}
+  .std b{color:#8a6d1f}
+  .detail h4{color:var(--green-d);margin:16px 0 6px;font-size:14.5px}
+  .detail ol{margin-left:20px}
+  .detail li{margin-bottom:6px}
+  .detail ul{margin-left:20px}
+  .assess{border-left:4px solid var(--green);background:var(--green-l);padding:10px 13px;border-radius:0 9px 9px 0;margin-top:14px;font-size:13.5px}
+  .calloutnote{border-left:4px solid var(--gold);background:var(--gold-l);padding:10px 13px;border-radius:0 9px 9px 0;margin-top:10px;font-size:13px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:22px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:center}
+  .stat b{font-size:22px;color:var(--green-d);font-family:Georgia,serif}
+  .stat span{display:block;font-size:11.5px;color:var(--mut);margin-top:2px}
+  footer{background:var(--green-d);color:#cfe5db;margin-top:30px}
+  .fwrap{max-width:1080px;margin:0 auto;padding:24px 16px;font-size:12.5px;display:grid;gap:6px}
+  footer b{color:#fff;font-size:13.5px}
+  footer a{color:#e6d68f}
+  .empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);padding:30px;text-align:center;color:var(--mut)}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+  .toast.show{opacity:1}
+  .saved{color:var(--gold)!important}
+  @media(max-width:640px){
+    .hero h1{font-size:22px} nav a{padding:7px 8px;font-size:12.5px} .detail{padding:16px}
+    .filters select{flex:1 1 42%;min-width:0}
+    .inp{flex:1 1 100%;min-width:0}
+  }
+  @media print{
+    header,footer,.hero,.no-print,nav{display:none!important}
+    body{background:#fff}
+    .detail{border:none;padding:0}
+    .btn{display:none}
+    main{max-width:100%;padding:0}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <div class="logo" onclick="go('#/')">
+      <div class="mark">T</div>
+      <div><b>TeachGH</b><span>Teaching resources · Basic 1 – JHS 3</span></div>
+    </div>
+    <nav id="nav">
+      <a href="#/" data-r="#/">Home</a>
+      <a href="#/browse" data-r="#/browse">Browse</a>
+      <a href="#/lifeskills" data-r="#/lifeskills">Life Skills</a>
+      <a href="#/activities" data-r="#/activities">Activities</a>
+      <a href="#/about" data-r="#/about">About</a>
+    </nav>
+  </div>
+</header>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<footer><div class="fwrap">
+  <b>TeachGH — teaching resources for Ghanaian basic schools</b>
+  <span>Aligned to the NaCCA Standards-Based Curriculum (Basic 1–6) and the Common Core Programme (JHS 1–3). Free for teachers. This platform does not claim any NaCCA, GES or MoE endorsement.</span>
+  <span>Spot an error in a resource? <a href="mailto:hungopaul2@gmail.com">hungopaul2@gmail.com</a> — we fix and republish.</span>
+  <span id="footver"></span>
+</div></footer>
+
+<script>
+const APP = {
+  data: null, saved: JSON.parse(localStorage.getItem('tgh_saved') || '[]'),
+  async init(){
+    try { this.data = await (await fetch('data.json')).json(); }
+    catch(e){ this.data = {resources:[],meta:{}}; }
+    window.addEventListener('hashchange', ()=>this.route());
+    if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+    fetch('version.json').then(r=>r.json()).then(v=>{
+      document.getElementById('footver').textContent = 'v'+v.version+' · build '+v.build;
+      const known = localStorage.getItem('tgh_ver');
+      if(known && known !== v.version){ localStorage.setItem('tgh_ver', v.version); caches.keys().then(ks=>ks.forEach(k=>caches.delete(k))); setTimeout(()=>location.reload(), 400); }
+      else localStorage.setItem('tgh_ver', v.version);
+    }).catch(()=>{});
+    this.route();
+  },
+  esc(s){ return (s??'').toString().replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); },
+  go(h){ location.hash = h; },
+  bandName(id){ const b=(this.data.meta.bands||[]).find(x=>x.id===id); return b?b.name:id; },
+  toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); },
+  toggleSave(id){ this.saved = this.saved.includes(id) ? this.saved.filter(x=>x!==id) : [...this.saved,id];
+    localStorage.setItem('tgh_saved', JSON.stringify(this.saved));
+    this.toast(this.saved.includes(id) ? 'Saved to My Resources' : 'Removed from saved'); this.route(); },
+  nav(route){ document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on', a.dataset.r===(route.split('?')[0]||'#/'))); },
+
+  route(){
+    const h = location.hash.replace(/^#/,'') || '/';
+    const [path, qs] = h.split('?');
+    const q = Object.fromEntries(new URLSearchParams(qs||''));
+    this.nav('#'+path);
+    const app = document.getElementById('app');
+    if(path === '/' || path === '') return this.home(app);
+    if(path === '/browse') return this.browse(app, q);
+    if(path === '/lifeskills') return this.lifeskills(app);
+    if(path === '/activities') return this.activities(app);
+    if(path.startsWith('/resource/')) return this.detail(app, path.split('/')[2]);
+    if(path === '/about') return this.about(app);
+    return this.home(app);
+  },
+
+  card(r){
+    const isSaved = this.saved.includes(r.id);
+    const kicker = (r.type==='life_skills')
+      ? `<span class="pill gold">Life Skills</span><span class="pill">${this.esc(r.theme||'')}</span>`
+      : (r.type==='extracurricular')
+      ? `<span class="pill gold">Activity</span><span class="pill">${this.esc(r.category||'')}</span>`
+      : `<span class="pill">${this.esc(r.subject)}</span><span class="pill gold">${this.esc(r.grades)}</span>`;
+    const meta = (r.type==='lesson_plan')
+      ? `${this.bandName(r.band)} · ${this.esc(r.strand||'')} · ${r.duration} min lesson`
+      : `${this.bandName(r.band)} · ${r.duration} min`;
+    return `<div class="rcard">
+      <div class="kicker">${kicker}</div>
+      <h3>${this.esc(r.title)}</h3>
+      <div class="meta">${meta}</div>
+      <div class="row">
+        <button class="btn small" onclick="go('#/resource/${r.id}')">Open</button>
+        <button class="btn ghost small ${isSaved?'saved':''}" onclick="toggleSave('${r.id}')">${isSaved?'★ Saved':'☆ Save'}</button>
+      </div></div>`;
+  },
+
+  home(app){
+    const n = this.data.resources.length, ls = this.data.resources.filter(r=>r.type==='life_skills').length, xc = this.data.resources.filter(r=>r.type==='extracurricular').length;
+    app.innerHTML = `
+    <div class="hero"><div class="hwrap2">
+      <h1>Ready-to-use lessons for what you're teaching this week.</h1>
+      <p>Curriculum-aligned lesson plans, life skills and extracurricular activities for Ghanaian basic schools — findable in under a minute, printable, and it works offline on a slow connection.</p>
+      <div class="chips">
+        <button class="chip" onclick="go('#/browse?level=lower_primary')">Lower Primary (B1–3)</button>
+        <button class="chip" onclick="go('#/browse?level=upper_primary')">Upper Primary (B4–6)</button>
+        <button class="chip" onclick="go('#/browse?level=jhs')">JHS (B7–9)</button>
+        <button class="chip" onclick="go('#/lifeskills')">Life Skills</button>
+        <button class="chip" onclick="go('#/activities')">Extracurricular</button>
+      </div>
+    </div></div>
+    <main>
+      <div class="stats">
+        <div class="stat"><b>${n}</b><span>Published resources</span></div>
+        <div class="stat"><b>${ls}</b><span>Life-skills modules</span></div>
+        <div class="stat"><b>${xc}</b><span>Activity guides</span></div>
+        <div class="stat"><b>3</b><span>Bands: B1–3 · B4–6 · JHS</span></div>
+      </div>
+      <section>
+        <h2>Browse by level</h2>
+        <p class="sub">Every resource is tagged with its subject, strand, content standard and indicator from the official NaCCA curriculum.</p>
+        <div class="bandgrid">
+          ${this.data.meta.bands.map(b=>`<div class="bandcard" onclick="go('#/browse?level=${b.id}')">
+            <h3>${b.name}</h3><p>${b.grades}</p><div class="go">Browse resources →</div></div>`).join('')}
+        </div>
+      </section>
+      <section>
+        <h2>Latest resources</h2>
+        <p class="sub">New lessons added weekly — Term 1 priority: Mathematics and English for every band.</p>
+        <div class="cards">${this.data.resources.slice(0,6).map(r=>this.card(r)).join('')}</div>
+      </section>
+    </main>`;
+  },
+
+  browse(app,q){
+    let rs = this.data.resources.filter(r=>r.type==='lesson_plan');
+    if(q.level) rs = rs.filter(r=>r.band===q.level);
+    if(q.subject) rs = rs.filter(r=>r.subject===q.subject);
+    if(q.q){ const s=q.q.toLowerCase(); rs = rs.filter(r=>JSON.stringify(r).toLowerCase().includes(s)); }
+    const subjects = [...new Set(this.data.resources.filter(r=>r.type==='lesson_plan').map(r=>r.subject))].sort();
+    app.innerHTML = `<main>
+      <section>
+        <h2>Browse the library</h2>
+        <p class="sub">Filter by level and subject the way you plan — by term and week.</p>
+        <div class="filters">
+          <select id="fLevel" onchange="fBrowse()">
+            <option value="">All levels</option>
+            ${this.data.meta.bands.map(b=>`<option value="${b.id}" ${q.level===b.id?'selected':''}>${b.name} (${b.grades})</option>`).join('')}
+          </select>
+          <select id="fSubject" onchange="fBrowse()">
+            <option value="">All subjects</option>
+            ${subjects.map(s=>`<option ${q.subject===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <input class="inp" id="fQ" placeholder="Search title, indicator, topic…" value="${this.esc(q.q||'')}" onkeydown="if(event.key==='Enter')fBrowse()">
+          <button class="btn" onclick="fBrowse()">Search</button>
+        </div>
+        ${rs.length ? `<div class="cards">${rs.map(r=>this.card(r)).join('')}</div>`
+          : `<div class="empty">No resources match yet — content is growing every week. Try another filter.</div>`}
+      </section></main>`;
+  },
+
+  lifeskills(app){
+    const themes = this.data.meta.lifeSkillsThemes;
+    app.innerHTML = `<main>
+      <section>
+        <h2>Life Skills</h2>
+        <p class="sub">A cross-cutting track — financial literacy, digital safety, health, values and study skills — tagged to the subjects they complement.</p>
+        <div class="filters">${themes.map(t=>`<span class="chip" style="background:#fff;border:1px solid var(--line);color:var(--green-d)">${t}</span>`).join('')}</div>
+        <div class="cards">${this.data.resources.filter(r=>r.type==='life_skills').map(r=>this.card(r)).join('')}</div>
+      </section></main>`;
+  },
+
+  activities(app){
+    app.innerHTML = `<main>
+      <section>
+        <h2>Extracurricular Activities</h2>
+        <p class="sub">Club and activity guides with objectives, materials and time needed — many need little or no equipment.</p>
+        <div class="filters">${(this.data.meta.activityCategories||[]).map(c=>`<span class="chip" style="background:#fff;border:1px solid var(--line);color:var(--green-d)">${c}</span>`).join('')}</div>
+        <div class="cards">${this.data.resources.filter(r=>r.type==='extracurricular').map(r=>this.card(r)).join('')}</div>
+      </section></main>`;
+  },
+
+  detail(app,id){
+    const r = this.data.resources.find(x=>x.id===id);
+    if(!r) return this.go('#/browse');
+    const isSaved = this.saved.includes(r.id);
+    const kick = (r.type==='life_skills') ? `<span class="pill gold">Life Skills</span><span class="pill">${this.esc(r.theme)}</span><span class="pill">${this.esc(r.grades)}</span>`
+      : (r.type==='extracurricular') ? `<span class="pill gold">Extracurricular</span><span class="pill">${this.esc(r.category)}</span><span class="pill">${this.esc(r.grades)}</span>`
+      : `<span class="pill">${this.esc(r.subject)}</span><span class="pill gold">${this.esc(r.grades)}</span>`;
+    const stdBlock = (r.contentStandard) ? `<div class="std"><b>Content Standard:</b> ${this.esc(r.contentStandard)}<br><b>Learning Indicator:</b> ${this.esc(r.indicator)}</div>` : '';
+    const strandLine = (r.type==='lesson_plan') ? `<div class="meta" style="margin-bottom:8px">${this.bandName(r.band)} · ${this.esc(r.subject)} · Strand: ${this.esc(r.strand||'—')}${r.substrand?` · Sub-strand: ${this.esc(r.substrand)}`:''} · ${r.duration} minutes</div>` : '';
+    app.innerHTML = `<main>
+      <a class="back no-print" onclick="history.back()">← Back</a>
+      <div class="detail">
+        <div class="kick">${kick}</div>
+        <h1>${this.esc(r.title)}</h1>
+        ${strandLine}${stdBlock}
+        <h4>Learning outcomes</h4><ul>${r.outcomes.map(o=>`<li>${this.esc(o)}</li>`).join('')}</ul>
+        <h4>${r.type==='lesson_plan'?'Lesson outline':'How to run it'}</h4>
+        <ol>${r.steps.map(s=>`<li>${this.esc(s)}</li>`).join('')}</ol>
+        <h4>Teaching &amp; learning materials</h4><ul>${r.materials.map(m=>`<li>${this.esc(m)}</li>`).join('')}</ul>
+        <div class="assess"><b>Assessment:</b> ${this.esc(r.assessment)}</div>
+        ${r.notes?`<div class="calloutnote"><b>Teacher note:</b> ${this.esc(r.notes)}</div>`:''}
+        <div style="margin-top:16px;display:flex;gap:8px" class="no-print">
+          <button class="btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+          <button class="btn ghost ${isSaved?'saved':''}" onclick="toggleSave('${r.id}')">${isSaved?'★ Saved':'☆ Save for later'}</button>
+        </div>
+      </div></main>`;
+    document.title = r.title + ' — TeachGH';
+  },
+
+  about(app){
+    app.innerHTML = `<main>
+      <section>
+        <h2>About TeachGH</h2>
+        <p class="sub">Built for Ghanaian classrooms, by Ghanaians.</p>
+        <div class="detail">
+          <p><b>What this is:</b> a professional resource platform where Ghanaian basic-school teachers (Basic 1 – JHS 3) find ready-to-use, curriculum-aligned lesson plans, life-skills modules and extracurricular activity guides — free, printable and offline-capable.</p>
+          <p style="margin-top:10px"><b>Curriculum alignment:</b> every lesson references the official NaCCA Standards-Based Curriculum (2019) for Basic 1–6 and the Common Core Programme for JHS 1–3, using official content standards and learning indicators. Official curriculum documents are published free by NaCCA at nacca.gov.gh — we align to them and link to them; we do not reproduce or rehost them.</p>
+          <p style="margin-top:10px"><b>Quality:</b> every resource passes a review status (draft → review → published) before it appears. Found an error? Tell us and it gets fixed: hungopaul2@gmail.com.</p>
+          <p style="margin-top:10px"><b>Privacy:</b> we collect nothing about children. Saved resources are stored only on your own device.</p>
+          <p style="margin-top:10px"><b>Offline:</b> install this site to your home screen (browser menu → Add to Home Screen) and your saved library keeps working without data.</p>
+        </div>
+      </section></main>`;
+  }
+};
+
+function fBrowse(){ const l=document.getElementById('fLevel').value, s=document.getElementById('fSubject').value, q=document.getElementById('fQ').value.trim();
+  APP.go('#/browse?'+new URLSearchParams({level:l,subject:s,q}).toString()); }
+function go(h){ APP.go(h); }
+function toggleSave(id){ APP.toggleSave(id); }
+APP.init();
+</script>
+</body>
+</html>
