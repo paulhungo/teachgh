@@ -71,6 +71,13 @@
   .detail ul{margin-left:20px}
   .assess{border-left:4px solid var(--green);background:var(--green-l);padding:10px 13px;border-radius:0 9px 9px 0;margin-top:14px;font-size:13.5px}
   .calloutnote{border-left:4px solid var(--gold);background:var(--gold-l);padding:10px 13px;border-radius:0 9px 9px 0;margin-top:10px;font-size:13px}
+  .rls{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fff}
+  .rls .sit{font-weight:700;color:var(--red)}
+  .rls .way{margin-top:6px;font-size:13.5px}
+  .rls .way b{color:var(--green-d)}
+  .encourage{border:2px solid var(--gold);background:var(--gold-l);border-radius:12px;padding:16px 18px;margin-top:18px}
+  .encourage h4{color:#8a6d1f;margin:0 0 8px;font-family:Georgia,serif;font-size:15.5px}
+  .encourage p{font-size:14px;color:#4d4420;font-style:italic}
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:22px 0}
   .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:center}
   .stat b{font-size:22px;color:var(--green-d);font-family:Georgia,serif}
@@ -189,7 +196,7 @@ const APP = {
     app.innerHTML = `
     <div class="hero"><div class="hwrap2">
       <h1>Ready-to-use lessons for what you're teaching this week.</h1>
-      <p>Curriculum-aligned lesson plans, 34 fully-explained practical life-skills modules and extracurricular activity guides for Ghanaian basic schools — findable in under a minute, printable, and it works offline on a slow connection.</p>
+      <p>Curriculum-aligned lesson plans, 105 fully-explained practical life-skills modules and extracurricular activity guides for Ghanaian basic schools — divided by class from Basic 1 to JHS 3, printable, and it works offline on a slow connection.</p>
       <div class="chips">
         <button class="chip" onclick="go('#/browse?level=lower_primary')">Lower Primary (B1–3)</button>
         <button class="chip" onclick="go('#/browse?level=upper_primary')">Upper Primary (B4–6)</button>
@@ -250,15 +257,24 @@ const APP = {
 
   lifeskills(app){
     const themes = this.data.meta.lifeSkillsThemes;
+    const bands = this.data.meta.bands;
     const sel = this._lsTheme || '';
-    let rs = this.data.resources.filter(r=>r.type==='life_skills');
+    const bsel = this._lsBand || '';
+    const all = this.data.resources.filter(r=>r.type==='life_skills');
+    let rs = all;
     if(sel) rs = rs.filter(r=>r.theme===sel);
+    if(bsel) rs = rs.filter(r=>r.band===bsel);
+    const bname = id => { const b=bands.find(x=>x.id===id); return b?b.name.split(' ')[0]:id; };
     app.innerHTML = `<main>
       <section>
-        <h2>Life Skills (${this.data.resources.filter(r=>r.type==='life_skills').length} modules)</h2>
-        <p class="sub">Practical skills every Ghanaian child needs — each module fully explained with why it matters, a step-by-step lesson, materials and assessment. A cross-cutting track tagged to the subjects they complement.</p>
+        <h2>Life Skills (${all.length} modules)</h2>
+        <p class="sub">Practical skills every Ghanaian child needs — fully explained with why it matters, a step-by-step lesson, real-life situations and how to overcome them, home practice, and a praise-and-encouragement ending for the class. Divided by class: Basic 1–3, Basic 4–6 and JHS 1–3.</p>
+        <div class="filters" style="margin-bottom:6px">
+          <span class="chip" style="background:${bsel?'#fff':'var(--green)'};border:1px solid var(--line);color:${bsel?'var(--green-d)':'#fff'};cursor:pointer" onclick="fBand('')">All levels (${all.length})</span>
+          ${bands.map(b=>{ const c=all.filter(r=>r.band===b.id).length; return `<span class="chip" style="background:${bsel===b.id?'var(--green)':'#fff'};border:1px solid var(--line);color:${bsel===b.id?'#fff':'var(--green-d)'};cursor:pointer" onclick="fBand('${b.id}')">${b.name} · ${b.grades} (${c})</span>`; }).join('')}
+        </div>
         <div class="filters">
-          <span class="chip" style="background:${sel?'#fff':'var(--green)'};border:1px solid var(--line);color:${sel?'var(--green-d)':'#fff'};cursor:pointer" onclick="fTheme('')">All (${this.data.resources.filter(r=>r.type==='life_skills').length})</span>
+          <span class="chip" style="background:${sel?'#fff':'var(--green)'};border:1px solid var(--line);color:${sel?'var(--green-d)':'#fff'};cursor:pointer" onclick="fTheme('')">All themes (${all.length})</span>
           ${themes.map(t=>{ const c=this.data.resources.filter(r=>r.type==='life_skills'&&r.theme===t).length; return `<span class="chip" style="background:${sel===t?'var(--green)':'#fff'};border:1px solid var(--line);color:${sel===t?'#fff':'var(--green-d)'};cursor:pointer" onclick="fTheme('${t}')">${t} (${c})</span>`; }).join('')}
         </div>
         ${rs.length ? `<div class="cards">${rs.map(r=>this.card(r)).join('')}</div>` : `<div class="empty">No modules in this theme yet.</div>`}
@@ -293,13 +309,18 @@ const APP = {
         <h1>${this.esc(r.title)}</h1>
         ${strandLine}${stdBlock}${why}
         <h4>Learning outcomes</h4><ul>${r.outcomes.map(o=>`<li>${this.esc(o)}</li>`).join('')}</ul>
-        <h4>${r.type==='lesson_plan'?'Lesson outline':'How to run it'}</h4>
+        <h4>${r.type==='lesson_plan'?'Lesson outline':'How to teach it — step by step'}</h4>
         <ol>${r.steps.map(s=>`<li>${this.esc(s)}</li>`).join('')}</ol>
+        ${r.activities&&r.activities.length?`<h4>Practical activities</h4><ul>${r.activities.map(a=>`<li>${this.esc(a)}</li>`).join('')}</ul>`:''}
+        ${r.reallife&&r.reallife.length?`<h4>Real-life situations — and how to overcome them</h4>${r.reallife.map(x=>`<div class="rls"><div class="sit">Situation: ${this.esc(x.situation)}</div><div class="way"><b>How to overcome it:</b> ${this.esc(x.way)}</div></div>`).join('')}`:''}
+        ${r.home&&r.home.length?`<div class="calloutnote" style="border-left-color:var(--green);background:var(--green-l)"><b>Home practice (give this to the children):</b><ul style="margin:6px 0 0 20px">${r.home.map(h=>`<li>${this.esc(h)}</li>`).join('')}</ul></div>`:''}
+        ${r.discussion&&r.discussion.length?`<h4>Talk about it — discussion questions</h4><ul>${r.discussion.map(q=>`<li>${this.esc(q)}</li>`).join('')}</ul>`:''}
         <h4>Teaching &amp; learning materials</h4><ul>${r.materials.map(m=>`<li>${this.esc(m)}</li>`).join('')}</ul>
         <div class="assess"><b>Assessment:</b> ${this.esc(r.assessment)}</div>
         ${r.notes?`<div class="calloutnote"><b>Teacher note:</b> ${this.esc(r.notes)}</div>`:''}
+        ${r.encouragement?`<div class="encourage"><h4>End of lesson — appreciate and encourage the children</h4><p>"${this.esc(r.encouragement)}"</p></div>`:''}
         <div style="margin-top:16px;display:flex;gap:8px" class="no-print">
-          <button class="btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+          <button class="btn" onclick="window.print()">Print / Save as PDF</button>
           <button class="btn ghost ${isSaved?'saved':''}" onclick="toggleSave('${r.id}')">${isSaved?'★ Saved':'☆ Save for later'}</button>
         </div>
       </div></main>`;
@@ -334,7 +355,7 @@ const APP = {
         <h2>About TeachGH</h2>
         <p class="sub">Built for Ghanaian classrooms, by Ghanaians.</p>
         <div class="detail">
-          <p><b>What this is:</b> a professional resource platform where Ghanaian basic-school teachers (Basic 1 – JHS 3) find ready-to-use, curriculum-aligned lesson plans, 30+ fully-explained practical life-skills modules (financial literacy, digital safety, health, first aid, values, study skills and more) and extracurricular activity guides — free, printable and offline-capable.</p>
+          <p><b>What this is:</b> a professional resource platform where Ghanaian basic-school teachers (Basic 1 – JHS 3) find ready-to-use, curriculum-aligned lesson plans, 105 fully-explained practical life-skills modules (home knowledge, manners and Ghanaian values, friendship skills, money skills, study habits, real-life situations and how to overcome them, health, safety, digital safety, environment and more) and extracurricular activity guides — free, printable and offline-capable. Every module ends with a praise-and-encouragement section the teacher reads to appreciate the children.</p>
           <p style="margin-top:10px"><b>Curriculum alignment:</b> every lesson references the official NaCCA Standards-Based Curriculum (2019) for Basic 1–6 and the Common Core Programme for JHS 1–3, using official content standards and learning indicators. Official curriculum documents are published free by NaCCA at nacca.gov.gh — we align to them and link to them; we do not reproduce or rehost them.</p>
           <p style="margin-top:10px"><b>Quality:</b> every resource passes a review status (draft → review → published) before it appears. Found an error? Tell us and it gets fixed: hungopaul2@gmail.com.</p>
           <p style="margin-top:10px"><b>Privacy:</b> we collect nothing about children. Saved resources are stored only on your own device.</p>
@@ -346,6 +367,8 @@ const APP = {
 
 function fBrowse(){ const l=document.getElementById('fLevel').value, s=document.getElementById('fSubject').value, q=document.getElementById('fQ').value.trim();
   APP.go('#/browse?'+new URLSearchParams({level:l,subject:s,q}).toString()); }
+function fTheme(t){ APP._lsTheme = t; APP.route(); }
+function fBand(b){ APP._lsBand = b; APP.route(); }
 function go(h){ APP.go(h); }
 function toggleSave(id){ APP.toggleSave(id); }
 APP.init();
